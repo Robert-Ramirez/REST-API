@@ -5,17 +5,20 @@
 	<link rel="stylesheet" type="text/css" href="views/css/todos.css">
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
-	<script type="text/javascript" src="views/js/lib/jquery-2.1.4.min.js"></script>
 </head>
 <body>
-
 <div id="container">
-	<h1>To-Do List <i class="fa fa-plus"></i></h1>
-	<input type="text" placeholder="Add New Todo">
-	<ul>
+	<div id="myDIV" class="header">
+		<h2>My To Do List </h2>
+		<input type="text" id="myInput" placeholder="Add New Todo">
+		<span onclick="newElement()" class="addBtn">+</span>
+	</div>
+	  
+	<ul id="myUL">
+		<li class="checked">School</li>
 	</ul>
+	<div></div>
 </div>
-
-<script type="text/javascript" src="views/js/todos.js"></script>
+	<script type="text/javascript" src="views/js/todos.js"></script>
 </body>
 </html>

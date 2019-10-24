@@ -1,26 +1,55 @@
-// Check Off Specific Todos By Clicking
-$("ul").on("click", "li", function(){
-	$(this).toggleClass("completed");
-});
+// Create a "close" button and append it to each list item
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
+}
 
-//Click on X to delete Todo
-$("ul").on("click", "span", function(event){
-	$(this).parent().fadeOut(500,function(){
-		$(this).remove();
-	});
-	event.stopPropagation();
-});
+// Click on a close button to hide the current list item
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+    div.style.display = "none";
+  }
+}
 
-$("input[type='text']").keypress(function(event){
-	if(event.which === 13){
-		//grabbing new todo text from input
-		var todoText = $(this).val();
-		$(this).val("");
-		//create a new li and add to ul
-		$("ul").append("<li><span><i class='fa fa-trash'></i></span> " + todoText + "</li>")
-	}
-});
+// Add a "checked" symbol when clicking on a list item
+var list = document.querySelector('ul');
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+  }
+}, false);
 
-$(".fa-plus").click(function(){
-	$("input[type='text']").fadeToggle();
-});
+// Create a new list item when clicking on the "Add" button
+function newElement() {
+  var li = document.createElement("li");
+  var inputValue = document.getElementById("myInput").value;
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert("You must write something!");
+  } else {
+    document.getElementById("myUL").appendChild(li);
+  }
+  document.getElementById("myInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+}
