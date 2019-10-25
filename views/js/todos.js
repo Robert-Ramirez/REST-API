@@ -17,7 +17,7 @@ function newElement() {
   } else {
     document.getElementById("myUL").appendChild(li);
   }
-  //reset the input form
+  // Reset input form
   document.getElementById("myInput").value = "";
 
   let span = document.createElement("SPAN");

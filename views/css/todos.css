@@ -1,17 +1,15 @@
-/* Include the padding and border in an element's total width and height */
 * {
   box-sizing: border-box;
 }
 
 body {
 	font-family: Roboto;
-  background: -webkit-linear-gradient(90deg, #2BC0E4 10%, #EAECC6 90%); /* Chrome 10+, Saf5.1+ */
-  background:    -moz-linear-gradient(90deg, #2BC0E4 10%, #EAECC6 90%); /* FF3.6+ */
-  background:     -ms-linear-gradient(90deg, #2BC0E4 10%, #EAECC6 90%); /* IE10 */
-  background:      -o-linear-gradient(90deg, #2BC0E4 10%, #EAECC6 90%); /* Opera 11.10+ */
-  background:         linear-gradient(90deg, #2BC0E4 10%, #EAECC6 90%); /* W3C */
+  background: -webkit-linear-gradient(90deg, #2BC0E4 10%, #EAECC6 90%); 
+  background:    -moz-linear-gradient(90deg, #2BC0E4 10%, #EAECC6 90%); 
+  background:     -ms-linear-gradient(90deg, #2BC0E4 10%, #EAECC6 90%); 
+  background:      -o-linear-gradient(90deg, #2BC0E4 10%, #EAECC6 90%);
+  background:         linear-gradient(90deg, #2BC0E4 10%, #EAECC6 90%); 
 }
-
 
 .container {
 	width: 360px;
@@ -25,13 +23,12 @@ body {
 	margin: 0;
 	padding: 0;
 }
-/* Remove margins and padding from the list */
+
 ul {
   margin: 0;
   padding: 0;
 }
 
-/* Style the list items */
 ul li {
   cursor: pointer;
   position: relative;
@@ -39,32 +36,22 @@ ul li {
   background: #eee;
   font-size: 18px;
   transition: 0.2s;
-
-  /* make the list items unselectable */
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
-/* Set all odd list items to a different color (zebra-stripes) */
 ul li:nth-child(odd) {
   background: #f9f9f9;
 }
 
-/* Darker background-color on hover */
 ul li:hover {
   background: #ddd;
 }
 
-/* When clicked on, add a background color and strike out text */
 ul li.checked {
   background: green;
   color: #fff;
   text-decoration: line-through;
 }
 
-/* Add a "checked" mark when clicked on */
 ul li.checked::before {
   content: '';
   position: absolute;
@@ -78,7 +65,6 @@ ul li.checked::before {
   width: 7px;
 }
 
-/* Style the close button */
 .fa-trash {
   float: right;
 }
@@ -87,7 +73,6 @@ ul li.checked::before {
   color: red;
 }
 
-/* Style the header */
 h2 {
 	background: #2980b9;
 	color: white;
@@ -99,14 +84,12 @@ h2 {
   text-align: center;
 }
 
-/* Clear floats after the header */
 .header:after {
   content: "";
   display: table;
   clear: both;
 }
 
-/* Style the input */
 input {
   margin: 0;
   border: none;
@@ -117,7 +100,6 @@ input {
   font-size: 16px;
 }
 
-/* Style the "Add" button */
 .addBtn {
   padding: 10px;
   width: 25%;
