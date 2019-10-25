@@ -1,0 +1,21 @@
+<% include partials/header %>
+<div class="container">
+	<div class="header">
+			<h2>My To Do List</h2>
+			<form action="/tasks" method="POST">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="name" placeholder="Add New Task">
+                </div>
+                <div class="form-group">
+                    <button class="addBtn">+</button>
+                </div>
+	</div>
+				
+	<ul id="myUL">
+        <% tasks.forEach(function(task){ %>
+            <li <span><i class="fa fa-trash"></i></span><%= task.name %>
+            </li>
+        <% }); %>
+		</ul>
+	</div>
+<% include partials/footer %>
