@@ -17,7 +17,8 @@ const taskSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      trim: true
+      trim: true,
+      required: [true, 'A task must have a description']
     }
   }
 );

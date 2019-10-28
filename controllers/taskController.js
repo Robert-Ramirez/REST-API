@@ -33,11 +33,10 @@ exports.getTask = async (req, res) => {
 
 exports.createTask = async (req, res) => {
   try {
-
     const newtask = await Task.create(req.body);
 
     res.status(201).json({
-        Task: newtask
+      Task: newtask
     });
   } catch (err) {
     res.status(400).json({
@@ -46,7 +45,23 @@ exports.createTask = async (req, res) => {
   }
 };
 
-exports.updateTask = async (req, res) => {
+exports.putTask = async (req, res) => {
+  try {
+    const task = await Task.findOneAndReplace(req.body.name, req.body, {
+      new: true,
+      runValidators: true
+    });
+    res.status(200).json({
+      Task: task
+    });
+  } catch (err) {
+    res.status(404).json({
+      message: err
+    });
+  }
+};
+
+exports.patchTask = async (req, res) => {
   try {
     const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -72,4 +87,3 @@ exports.deleteTask = async (req, res) => {
     });
   }
 };
-
