@@ -9,7 +9,7 @@ const taskSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       maxlength: [40, 'A task name must have less or equal then 40 characters'],
-      minlength: [10, 'A task name must have more or equal then 10 characters']
+      minlength: [4, 'A task name must have more or equal then 4 characters']
     },
     slug: String,
     duration: {
@@ -20,10 +20,6 @@ const taskSchema = new mongoose.Schema(
       type: String,
       trim: true
     }
-  },
-  {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
   }
 );
 
