@@ -35,9 +35,7 @@ exports.createTask = async (req, res) => {
   try {
     const newtask = await Task.create(req.body);
 
-    res.status(201).json({
-      Task: newtask
-    });
+    res.status(201).json();
   } catch (err) {
     res.status(400).json({
       message: err
@@ -51,9 +49,7 @@ exports.putTask = async (req, res) => {
       new: true,
       runValidators: true
     });
-    res.status(200).json({
-      Task: task
-    });
+    res.status(200).json();
   } catch (err) {
     res.status(404).json({
       message: err
@@ -67,7 +63,6 @@ exports.patchTask = async (req, res) => {
       new: true,
       runValidators: true
     });
-
     res.status(200).json();
   } catch (err) {
     res.status(404).json({
