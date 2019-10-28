@@ -47,7 +47,7 @@ exports.createTask = async (req, res) => {
 
 exports.putTask = async (req, res) => {
   try {
-    const task = await Task.findOneAndReplace(req.body.name, req.body, {
+    const task = await Task.findOneAndReplace(req.params.id, req.body, {
       new: true,
       runValidators: true
     });
