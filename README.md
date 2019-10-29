@@ -1,3 +1,3 @@
-# To Do List API
+# Rest API
 
-Created a To Do List API using NODE JS wth EXPRESS
+Designed and implemented for users to manage diet and exercise to determine optimal caloric intake and nutrients for the users' goals.
