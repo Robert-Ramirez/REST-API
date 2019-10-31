@@ -3,6 +3,12 @@ const taskController = require('./../controllers/taskController');
 
 const router = express.Router();
 
+router.route('/task-stats').get(taskController.getTaskStats);
+
+router
+  .route('/top-5')
+  .get(taskController.aliasTopTasks, taskController.getAllTasks);
+
 router
   .route('/')
   .get(taskController.getAllTasks)
@@ -14,12 +20,5 @@ router
   .put(taskController.putTask)
   .patch(taskController.patchTask)
   .delete(taskController.deleteTask);
-
-  router
-  .route('/top-5')
-  .get(tourController.aliasTopTasks, tourController.getAllTours);
-
-router.route('/tasks-stats').get(tourController.getTaskStats);
-
 
 module.exports = router;

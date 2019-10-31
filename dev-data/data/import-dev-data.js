@@ -1,7 +1,7 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const Tour = require('./../../models/taskModel');
+const Task = require('./../../models/taskModel');
 
 dotenv.config({ path: './../../config.env' });
 
@@ -20,14 +20,14 @@ mongoose
   .then(() => console.log('DB connection successful!'));
 
 // READ JSON FILE
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
+const Tasks = JSON.parse(
+  fs.readFileSync(`${__dirname}/tasks-simple.json`, 'utf-8')
 );
 
 // IMPORT DATA INTO DB
 const importData = async () => {
   try {
-    await Tour.create(tours);
+    await Task.create(Tasks);
     console.log('Data successfully loaded!');
   } catch (err) {
     console.log(err);
@@ -38,7 +38,7 @@ const importData = async () => {
 // DELETE ALL DATA FROM DB
 const deleteData = async () => {
   try {
-    await Tour.deleteMany();
+    await Task.deleteMany();
     console.log('Data successfully deleted!');
   } catch (err) {
     console.log(err);

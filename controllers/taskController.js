@@ -11,7 +11,7 @@ exports.aliasTopTasks = (req, res, next) => {
 exports.getAllTasks = async (req, res) => {
   try {
     // EXECUTE QUERY
-    const features = new APIFeatures(Tasks.find(), req.query)
+    const features = new APIFeatures(Task.find(), req.query)
       .filter()
       .sort()
       .limitFields()
@@ -46,14 +46,14 @@ exports.getTask = async (req, res) => {
 
 exports.getTaskStats = async (req, res) => {
   try {
-    const stats = await Tour.aggregate([
+    const stats = await Task.aggregate([
       {
         $match: { ratingsAverage: { $gte: 4.5 } }
       },
       {
         $group: {
           _id: { $toUpper: '$difficulty' },
-          numTours: { $sum: 1 },
+          numTasks: { $sum: 1 },
           numRatings: { $sum: '$ratingsQuantity' },
           avgRating: { $avg: '$ratingsAverage' },
           avgPrice: { $avg: '$price' },
@@ -67,7 +67,7 @@ exports.getTaskStats = async (req, res) => {
     ]);
 
     res.status(200).json({
-        stats
+      stats
     });
   } catch (err) {
     res.status(404).json({
