@@ -15,4 +15,11 @@ router
   .patch(taskController.patchTask)
   .delete(taskController.deleteTask);
 
+  router
+  .route('/top-5')
+  .get(tourController.aliasTopTasks, tourController.getAllTours);
+
+router.route('/tasks-stats').get(tourController.getTaskStats);
+
+
 module.exports = router;

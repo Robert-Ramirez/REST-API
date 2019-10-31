@@ -8,7 +8,7 @@ const app = require('./app');
 const port = process.env.PORT || 3000;
 
 const DB = process.env.DATABASE.replace(
-  '<PASSWORD>',
+  '<password>',
   process.env.DATABASE_PASSWORD
 );
 
@@ -20,6 +20,7 @@ mongoose
     useUnifiedTopology: true
   })
   .then(() => {
+    console.log('Database has connected!');
     app.listen(port);
   })
   .catch(err => console.log(err));
