@@ -4,6 +4,9 @@
   "description": "Create a to do list website",
   "main": "app.js",
   "scripts": {
+    "migration": "node ./scripts/migration.js --import",
+    "delete": "node ./scripts/migration.js --delete",
+    "seeder": "node ./scripts/seeder.js --import",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -20,6 +23,7 @@
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "faker": "^4.1.0",
     "morgan": "^1.9.1",
     "pg": "^7.12.1"
   },
