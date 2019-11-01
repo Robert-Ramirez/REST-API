@@ -26,7 +26,6 @@ const importData = async () => {
       if (error) {
         throw error;
       }
-      console.log(results);
     });
     i += 1;
   }

@@ -27,7 +27,6 @@ const importData = async () => {
       if (error) {
         throw error;
       }
-      console.log(results);
     });
     i += 1;
   }
@@ -39,7 +38,6 @@ const deleteData = async () => {
     if (error) {
       throw error;
     }
-    console.log('Data successfully deleted!');
   });
 };
 

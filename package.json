@@ -4,9 +4,9 @@
   "description": "Create a to do list website",
   "main": "app.js",
   "scripts": {
-    "migration": "node ./scripts/migration.js --import",
-    "delete": "node ./scripts/migration.js --delete",
-    "seeder": "node ./scripts/seeder.js --import",
+    "migrate": "node ./scripts/migrate.js --import",
+    "delete": "node ./scripts/migrate.js --delete",
+    "seed": "node ./scripts/seed.js --import",
     "start": "nodemon server.js"
   },
   "repository": {
