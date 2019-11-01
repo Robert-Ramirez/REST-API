@@ -1,24 +1,18 @@
 const express = require('express');
-const taskController = require('./../controllers/taskController');
+const taskController = require('../controllers/taskController');
 
 const router = express.Router();
 
-router.route('/task-stats').get(taskController.getTaskStats);
-
-router
-  .route('/top-5')
-  .get(taskController.aliasTopTasks, taskController.getAllTasks);
-
 router
   .route('/')
-  .get(taskController.getAllTasks)
-  .post(taskController.createTask);
+  .get(taskController.gettasks)
+  .post(taskController.createTasks);
 
 router
   .route('/:id')
-  .get(taskController.getTask)
-  .put(taskController.putTask)
-  .patch(taskController.patchTask)
-  .delete(taskController.deleteTask);
+  .get(taskController.getTasksById)
+  .put(taskController.updateTasksPut)
+  .patch(taskController.updateTasksPatch)
+  .delete(taskController.deleteTasks);
 
 module.exports = router;

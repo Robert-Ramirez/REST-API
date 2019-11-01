@@ -1,129 +1,84 @@
-const Task = require('./../models/taskModel');
-const APIFeatures = require('./../utils/apiFeatures');
+const { Pool } = require('pg');
 
-exports.aliasTopTasks = (req, res, next) => {
-  req.query.limit = '5';
-  req.query.sort = '-ratingsAverage,price';
-  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
-  next();
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: process.env.DATABASE,
+  password: process.env.DATABASE_PASSWORD,
+  port: process.env.DATABASE_PORT
+});
+
+exports.gettasks = async (req, res) => {
+  const sql = 'SELECT * FROM tasks ORDER BY id ASC';
+  pool.query(sql, (error, results) => {
+    if (error) {
+      throw error;
+    }
+    res.status(200).json(results.rows);
+  });
 };
 
-exports.getAllTasks = async (req, res) => {
-  try {
-    // EXECUTE QUERY
-    const features = new APIFeatures(Task.find(), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
-    const tasks = await features.query;
+exports.getTasksById = async (req, res) => {
+  const sql = 'SELECT * FROM tasks WHERE id=$1';
+  const params = [req.params.id];
 
-    // SEND RESPONSE
-    res.status(200).json({
-      results: tasks.length,
-      tasks
-    });
-  } catch (err) {
-    res.status(404).json({
-      message: err
-    });
-  }
+  pool.query(sql, params, (error, results) => {
+    if (error) {
+      throw error;
+    }
+    res.status(200).json(results.rows);
+  });
 };
 
-exports.getTask = async (req, res) => {
-  try {
-    const task = await Task.findById(req.params.id);
-
-    res.status(200).json({
-      task
-    });
-  } catch (err) {
-    res.status(404).json({
-      message: err
-    });
-  }
+exports.createTasks = async (req, res) => {
+  const sql =
+    'INSERT INTO tasks (name, duration, description) VALUES ($1, $2, $3)';
+  const params = [req.body.name, req.body.duration, req.body.description];
+  pool.query(sql, params, (error, results) => {
+    if (error) {
+      throw error;
+    }
+    res.status(201).send();
+  });
 };
 
-exports.getTaskStats = async (req, res) => {
-  try {
-    const stats = await Task.aggregate([
-      {
-        $match: { ratingsAverage: { $gte: 4.5 } }
-      },
-      {
-        $group: {
-          _id: { $toUpper: '$difficulty' },
-          numTasks: { $sum: 1 },
-          numRatings: { $sum: '$ratingsQuantity' },
-          avgRating: { $avg: '$ratingsAverage' },
-          avgPrice: { $avg: '$price' },
-          minPrice: { $min: '$price' },
-          maxPrice: { $max: '$price' }
-        }
-      },
-      {
-        $sort: { avgPrice: 1 }
-      }
-    ]);
+exports.updateTasksPut = async (req, res) => {
+  const sql =
+    'UPDATE tasks SET name=$1, duration=$2, description=$3 WHERE id=$4';
+  const params = [
+    req.body.name,
+    req.body.duration,
+    req.body.description,
+    req.params.id
+  ];
 
-    res.status(200).json({
-      stats
-    });
-  } catch (err) {
-    res.status(404).json({
-      message: err
-    });
-  }
+  pool.query(sql, params, (error, results) => {
+    if (error) {
+      throw error;
+    }
+    res.status(200).send();
+  });
 };
 
-exports.createTask = async (req, res) => {
-  try {
-    const newtask = await Task.create(req.body);
-
-    res.status(201).json();
-  } catch (err) {
-    res.status(400).json({
-      message: err
-    });
-  }
+exports.updateTasksPatch = async (req, res) => {
+  const sql = 'UPDATE tasks SET name=$1 WHERE id=$2';
+  const params = [req.body.name, req.params.id];
+  pool.query(sql, params, (error, results) => {
+    if (error) {
+      throw error;
+    }
+    res.status(200).send();
+  });
 };
 
-exports.putTask = async (req, res) => {
-  try {
-    const task = await Task.findOneAndReplace(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    });
-    res.status(200).json();
-  } catch (err) {
-    res.status(404).json({
-      message: err
-    });
-  }
-};
+exports.deleteTasks = async (req, res) => {
+  const sql = 'DELETE FROM tasks WHERE id=$1';
+  const params = [req.params.id];
 
-exports.patchTask = async (req, res) => {
-  try {
-    const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    });
-    res.status(200).json();
-  } catch (err) {
-    res.status(404).json({
-      message: err
-    });
-  }
-};
-
-exports.deleteTask = async (req, res) => {
-  try {
-    await Task.findByIdAndDelete(req.params.id);
-
-    res.status(204).json();
-  } catch (err) {
-    res.status(404).json({
-      message: err
-    });
-  }
+  pool.query(sql, params, (error, results) => {
+    if (error) {
+      throw error;
+    }
+    res.status(200).send();
+  });
 };
