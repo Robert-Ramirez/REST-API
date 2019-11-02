@@ -12,6 +12,24 @@ const pool = new Pool({
   port: process.env.DATABASE_PORT
 });
 
+const createTables = () => {
+  const tasks = `CREATE TABLE IF NOT EXISTS
+      tasks(
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(128) NOT NULL,
+        duration INT NOT NULL,
+        description VARCHAR(128) NOT NULL
+      )`;
+  pool
+    .query(tasks)
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 const Tasks = JSON.parse(
   fs.readFileSync(`${__dirname}./../dev-data/data/tasks-simple.json`, 'utf-8')
 );
@@ -42,6 +60,7 @@ const deleteData = async () => {
 };
 
 if (process.argv[2] === '--import') {
+  createTables();
   importData();
 } else if (process.argv[2] === '--delete') {
   deleteData();
