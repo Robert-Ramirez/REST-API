@@ -9,7 +9,11 @@ const pool = new Pool({
 });
 
 exports.gettasks = async (req, res) => {
-  const sql = 'SELECT * FROM tasks ORDER BY id ASC';
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 100;
+  const sql = `SELECT *
+  FROM tasks
+  LIMIT ${limit} OFFSET ${(page - 1) * limit}`;
   pool.query(sql, (error, results) => {
     if (error) {
       throw error;

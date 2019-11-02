@@ -51,7 +51,7 @@ const importData = async () => {
 };
 // DELETE ALL DATA FROM DB
 const deleteData = async () => {
-  const sql = 'DELETE FROM tasks';
+  const sql = 'DROP TABLE IF EXISTS tasks';
   pool.query(sql, (error, results) => {
     if (error) {
       throw error;
