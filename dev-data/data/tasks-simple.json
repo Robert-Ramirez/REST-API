@@ -2,47 +2,56 @@
     {
       "name": "The Forest Hiker",
       "duration": 5,
-      "description": "Testing" 
+      "description": "Testing",
+      "userID":2
     },
     {
       "name": "The Sea Explorer",
       "duration": 7,
-      "description": "Testing" 
+      "description": "Testing",
+      "userID":2
     },
     {
       "name": "The Snow Adventurer",
       "duration": 4,
-      "description": "Testing" 
+      "description": "Testing",
+      "userID":2 
     },
     {
       "name": "The City Wanderer",
       "duration": 9,
-      "description": "Testing" 
+      "description": "Testing",
+      "userID":2 
     },
     {
       "name": "The Park Camper",
       "duration": 10,
-      "description": "Testing" 
+      "description": "Testing",
+      "userID":2
     },
     {
       "name": "The Sports Lover",
       "duration": 14,
-      "description": "Testing" 
+      "description": "Testing",
+      "userID":2 
     },
     {
       "name": "The Wine Taster",
       "duration": 5,
-      "description": "Testing" 
+      "description": "Testing",
+      "userID":2 
     },
     {
       "name": "The Star Gazer",
       "duration": 9,
-      "description": "Testing" 
+      "description": "Testing",
+      "userID":2 
     },
     {
       "name": "The Northern Lights",
       "duration": 3,
-      "description": "Testing" 
+      "description": "Testing",
+      "userID":2 
     }
 ]
   

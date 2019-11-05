@@ -4,8 +4,10 @@
   "description": "Create a to do list website",
   "main": "app.js",
   "scripts": {
-    "migrate": "node ./scripts/migrate.js --import",
-    "delete": "node ./scripts/migrate.js --delete",
+    "migrate:task": "node ./scripts/migrateTask.js --import",
+    "migrate:user": "node ./scripts/migrateUser.js --import",
+    "delete:task": "node ./scripts/migrateTask.js --delete",
+    "delete:user": "node ./scripts/migrateUser.js --delete",
     "seed": "node ./scripts/seed.js --import",
     "start": "nodemon server.js"
   },

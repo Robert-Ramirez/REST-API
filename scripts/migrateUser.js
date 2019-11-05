@@ -13,15 +13,15 @@ const pool = new Pool({
 });
 
 const createTables = () => {
-  const tasks = `CREATE TABLE IF NOT EXISTS
-      tasks(
+  const users = `CREATE TABLE IF NOT EXISTS
+      users(
         id SERIAL PRIMARY KEY,
-        name VARCHAR(128) NOT NULL,
-        duration INT NOT NULL,
-        description VARCHAR(128) NOT NULL
+        email VARCHAR(128) NOT NULL,
+        password VARCHAR(128) NOT NULL,
+        role VARCHAR(128) NOT NULL
       )`;
   pool
-    .query(tasks)
+    .query(users)
     .then(res => {
       console.log(res);
     })
@@ -30,17 +30,16 @@ const createTables = () => {
     });
 };
 
-const Tasks = JSON.parse(
-  fs.readFileSync(`${__dirname}./../dev-data/data/tasks-simple.json`, 'utf-8')
+const users = JSON.parse(
+  fs.readFileSync(`${__dirname}./../dev-data/data/users-simple.json`, 'utf-8')
 );
 
 // IMPORT DATA INTO DB
 const importData = async () => {
-  const sql =
-    'INSERT INTO tasks(name, duration, description) VALUES ($1, $2, $3)';
+  const sql = 'INSERT INTO users(email, password, role) VALUES ($1, $2, $3)';
   let i = 0;
-  while (i < Tasks.length) {
-    const params = [Tasks[i].name, Tasks[i].duration, Tasks[i].discription];
+  while (i < users.length) {
+    const params = [users[i].email, users[i].password, users[i].role];
     pool.query(sql, params, (error, results) => {
       if (error) {
         throw error;
@@ -51,7 +50,7 @@ const importData = async () => {
 };
 // DELETE ALL DATA FROM DB
 const deleteData = async () => {
-  const sql = 'DROP TABLE IF EXISTS tasks';
+  const sql = 'DROP TABLE IF EXISTS users';
   pool.query(sql, (error, results) => {
     if (error) {
       throw error;

@@ -11,10 +11,12 @@ const pool = new Pool({
 exports.gettasks = async (req, res) => {
   const page = req.query.page * 1 || 1;
   const limit = req.query.limit * 1 || 100;
+  const params = [req.params.userId];
   const sql = `SELECT *
   FROM tasks
+  WHERE userId=$1
   LIMIT ${limit} OFFSET ${(page - 1) * limit}`;
-  pool.query(sql, (error, results) => {
+  pool.query(sql, params, (error, results) => {
     if (error) {
       throw error;
     }
@@ -23,8 +25,8 @@ exports.gettasks = async (req, res) => {
 };
 
 exports.getTasksById = async (req, res) => {
-  const sql = 'SELECT * FROM tasks WHERE id=$1';
-  const params = [req.params.id];
+  const sql = 'SELECT * FROM tasks WHERE id=$1 AND userId=$2';
+  const params = [req.params.taskId, req.params.userId];
 
   pool.query(sql, params, (error, results) => {
     if (error) {
@@ -36,8 +38,13 @@ exports.getTasksById = async (req, res) => {
 
 exports.createTasks = async (req, res) => {
   const sql =
-    'INSERT INTO tasks (name, duration, description) VALUES ($1, $2, $3)';
-  const params = [req.body.name, req.body.duration, req.body.description];
+    'INSERT INTO tasks (name, duration, description, userId) VALUES ($1, $2, $3, $4)';
+  const params = [
+    req.body.name,
+    req.body.duration,
+    req.body.description,
+    req.params.userId
+  ];
   pool.query(sql, params, (error, results) => {
     if (error) {
       throw error;
@@ -48,12 +55,13 @@ exports.createTasks = async (req, res) => {
 
 exports.updateTasksPut = async (req, res) => {
   const sql =
-    'UPDATE tasks SET name=$1, duration=$2, description=$3 WHERE id=$4';
+    'UPDATE tasks SET name=$1, duration=$2, description=$3 WHERE id=$4 AND userId=$5';
   const params = [
     req.body.name,
     req.body.duration,
     req.body.description,
-    req.params.id
+    req.params.taskId,
+    req.params.userId
   ];
 
   pool.query(sql, params, (error, results) => {
@@ -65,8 +73,8 @@ exports.updateTasksPut = async (req, res) => {
 };
 
 exports.updateTasksPatch = async (req, res) => {
-  const sql = 'UPDATE tasks SET name=$1 WHERE id=$2';
-  const params = [req.body.name, req.params.id];
+  const sql = 'UPDATE tasks SET name=$1 WHERE id=$2 AND userId=$3';
+  const params = [req.body.name, req.params.taskId, req.params.userId];
   pool.query(sql, params, (error, results) => {
     if (error) {
       throw error;
@@ -76,8 +84,8 @@ exports.updateTasksPatch = async (req, res) => {
 };
 
 exports.deleteTasks = async (req, res) => {
-  const sql = 'DELETE FROM tasks WHERE id=$1';
-  const params = [req.params.id];
+  const sql = 'DELETE FROM tasks WHERE id=$1 AND userId=$2';
+  const params = [req.params.taskId, req.params.userId];
 
   pool.query(sql, params, (error, results) => {
     if (error) {
