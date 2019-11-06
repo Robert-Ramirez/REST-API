@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const bcrypt = require('bcryptjs');
 const catchAsync = require('./../utils/catchAsync');
 
 const pool = new Pool({
@@ -27,26 +28,50 @@ exports.getUser = catchAsync(async (req, res) => {
 });
 
 exports.createUser = catchAsync(async (req, res) => {
-  const sql = 'INSERT INTO users(email, password, role) VALUES ($1, $2, $3)';
-  const params = [req.body.email, req.body.password, req.body.role];
+  const sql =
+    'INSERT INTO users(email, password, passwordconfirm, passwordResettoken, passwordResetexpires, role) VALUES ($1, $2, $3, $4, $5, $6)';
+  const password = await bcrypt.hash(req.params.password, 12);
+  const params = [
+    req.params.email,
+    password,
+    password,
+    req.params.passwordResettoken,
+    req.params.passwordResetexpires,
+    req.params.role
+  ];
   const results = await pool.query(sql, params);
   res.status(200).json(results.rows);
 });
 
 exports.updateUserPut = catchAsync(async (req, res) => {
-  const sql = 'UPDATE users SET email=$1, password=$2, role=$3 WHERE id=$4';
+  const sql =
+    'UPDATE users SET email=$1, password=$2, passwordconfirm=$3, passwordResettoken=$4, passwordResetexpires=$5, role WHERE id=$6';
+  const password = await bcrypt.hash(req.params.password, 12);
   const params = [
-    req.body.email,
-    req.body.password,
-    req.body.role,
+    req.params.email,
+    password,
+    password,
+    req.params.passwordResettoken,
+    req.params.passwordResetexpires,
+    req.params.role,
     req.params.userId
   ];
   const results = await pool.query(sql, params);
   res.status(200).json(results.rows);
 });
 exports.updateUserPatch = catchAsync(async (req, res) => {
-  const sql = 'UPDATE users SET email=$1 WHERE id=$2';
-  const params = [req.body.email, req.params.userId];
+  const sql =
+    'UPDATE users SET email=$1, password=$2, passwordconfirm=$3, passwordResettoken=$4, passwordResetexpires=$5, role WHERE id=$6';
+  const password = await bcrypt.hash(req.params.password, 12);
+  const params = [
+    req.params.email,
+    password,
+    password,
+    req.params.passwordResettoken,
+    req.params.passwordResetexpires,
+    req.params.role,
+    req.params.userId
+  ];
   const results = await pool.query(sql, params);
   res.status(200).json(results.rows);
 });

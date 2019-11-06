@@ -2,6 +2,9 @@
     {
       "email":"test@js.com",
       "password":"abcdefg",
+      "passwordconfirm":"abcdefg",
+      "passwordResettoken":"abcdefg",
+      "passwordResetexpires":"abcdefg",
       "role":"user"
     }
 ]

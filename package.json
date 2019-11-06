@@ -32,6 +32,7 @@
     "hpp": "^0.2.2",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
+    "nodemailer": "^6.3.1",
     "pg": "^7.12.1",
     "xss-clean": "^0.1.1"
   },

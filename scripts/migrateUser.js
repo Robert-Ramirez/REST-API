@@ -20,6 +20,9 @@ const createTables = () => {
         id SERIAL PRIMARY KEY,
         email VARCHAR(128) NOT NULL,
         password VARCHAR(128) NOT NULL,
+        passwordconfirm VARCHAR(128) NOT NULL,
+        passwordResettoken VARCHAR(128) NOT NULL,
+        passwordResetexpires VARCHAR(128) NOT NULL,
         role VARCHAR(128) NOT NULL
       )`;
   pool
@@ -38,14 +41,18 @@ const users = JSON.parse(
 
 // IMPORT DATA INTO DB
 const importData = catchAsync(async () => {
-  const sql = 'INSERT INTO users(email, password, role) VALUES ($1, $2, $3)';
-  let i = 0;
-  while (i < users.length) {
-    const password = bcrypt.hash(users[i].password, 12);
-    const params = [users[i].email, password, users[i].role];
-    pool.query(sql, params);
-    i += 1;
-  }
+  const sql =
+    'INSERT INTO users(email, password, passwordconfirm, passwordResettoken, passwordResetexpires, role) VALUES ($1, $2, $3, $4, $5, $6)';
+  const password = await bcrypt.hash(users[0].password, 12);
+  const params = [
+    users[0].email,
+    password,
+    password,
+    users[0].passwordResettoken,
+    users[0].passwordResetexpires,
+    users[0].role
+  ];
+  pool.query(sql, params);
 });
 
 // DELETE ALL DATA FROM DB
