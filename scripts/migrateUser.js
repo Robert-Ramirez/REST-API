@@ -1,6 +1,8 @@
 const fs = require('fs');
 const dotenv = require('dotenv');
 const { Pool } = require('pg');
+const bcrypt = require('bcryptjs');
+const catchAsync = require('./../utils/catchAsync');
 
 dotenv.config({ path: `${__dirname}./../config.env` });
 
@@ -35,28 +37,22 @@ const users = JSON.parse(
 );
 
 // IMPORT DATA INTO DB
-const importData = async () => {
+const importData = catchAsync(async () => {
   const sql = 'INSERT INTO users(email, password, role) VALUES ($1, $2, $3)';
   let i = 0;
   while (i < users.length) {
-    const params = [users[i].email, users[i].password, users[i].role];
-    pool.query(sql, params, (error, results) => {
-      if (error) {
-        throw error;
-      }
-    });
+    const password = bcrypt.hash(users[i].password, 12);
+    const params = [users[i].email, password, users[i].role];
+    pool.query(sql, params);
     i += 1;
   }
-};
+});
+
 // DELETE ALL DATA FROM DB
-const deleteData = async () => {
+const deleteData = catchAsync(async () => {
   const sql = 'DROP TABLE IF EXISTS users';
-  pool.query(sql, (error, results) => {
-    if (error) {
-      throw error;
-    }
-  });
-};
+  pool.query(sql);
+});
 
 if (process.argv[2] === '--import') {
   createTables();
