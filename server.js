@@ -4,8 +4,14 @@ dotenv.config({ path: './config.env' });
 const app = require('./app');
 
 const port = process.env.PORT || 5500;
-app.listen(port, () => {
-  console.log(`Server is on at port ${port}`);
+const server = app.listen(port, () => {
+  console.log(`App running on port ${port}`);
 });
 
-exports.module = dotenv;
+process.on('unhandledRejection', err => {
+  console.log('UNHANDLED REJECTION! Shutting down...');
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});

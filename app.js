@@ -9,6 +9,10 @@ const hpp = require('hpp');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const userRouter = require('./routes/userRoutes');
+const taskRouter = require('./routes/taskRoutes');
+const sequelize = require('./utils/database');
+const Task = require('./models/taskModel');
+const User = require('./models/userModel');
 
 // invoke an instance of express application.
 const app = express();
@@ -39,7 +43,7 @@ app.use(xss());
 // Prevent parameter pollution
 app.use(
   hpp({
-    whitelist: ['name', 'email']
+    whitelist: ['duration']
   })
 );
 
@@ -48,10 +52,22 @@ app.use(express.static(`${__dirname}/public`));
 
 // ROUTES
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/tasks', taskRouter);
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
 app.use(globalErrorHandler);
+
+Task.belongsTo(User);
+// create all the defined tables in the specified database.
+sequelize
+  .sync()
+  .then(() =>
+    console.log(
+      "tasks table has been successfully created, if one doesn't exist"
+    )
+  )
+  .catch(error => console.log('This error occured', error));
 
 module.exports = app;
