@@ -15,6 +15,8 @@ router.patch(
   authController.updatePassword
 );
 
+router.use(authController.restrictTo('admin'));
+
 router
   .route('/')
   .get(userController.getAllUsers)

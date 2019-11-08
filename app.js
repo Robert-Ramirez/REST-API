@@ -9,7 +9,7 @@ const hpp = require('hpp');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const userRouter = require('./routes/userRoutes');
-
+const taskRouter = require('./routes/taskRoutes');
 // invoke an instance of express application.
 const app = express();
 
@@ -39,7 +39,7 @@ app.use(xss());
 // Prevent parameter pollution
 app.use(
   hpp({
-    whitelist: ['name', 'email']
+    whitelist: ['duration']
   })
 );
 
@@ -48,6 +48,7 @@ app.use(express.static(`${__dirname}/public`));
 
 // ROUTES
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/tasks', taskRouter);
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
