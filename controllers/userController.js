@@ -1,84 +1,52 @@
-const { Pool } = require('pg');
-const bcrypt = require('bcryptjs');
+const User = require('../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: process.env.DATABASE,
-  password: process.env.DATABASE_PASSWORD,
-  port: process.env.DATABASE_PORT
-});
-
-exports.getAllUsers = catchAsync(async (req, res) => {
-  const page = req.query.page * 1 || 1;
-  const limit = req.query.limit * 1 || 100;
-  const sql = `SELECT *
-  FROM users
-  LIMIT ${limit} OFFSET ${(page - 1) * limit}`;
-  const results = await pool.query(sql);
-  res.status(200).json(results.rows);
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.findAll({ where: { active: true } });
+  res.status(200).json({
+    results: users.length,
+    data: {
+      users
+    }
+  });
 });
 
 exports.getUser = catchAsync(async (req, res) => {
-  const sql = 'SELECT * FROM users WHERE id=$1';
-  const params = [req.params.userId];
-  const results = await pool.query(sql, params);
-  res.status(200).json(results.rows);
+  const id = [req.params.id];
+  const user = await User.findOne({ where: { id: id, active: true } });
+  res.status(200).json({
+    data: {
+      user
+    }
+  });
 });
 
-exports.createUser = catchAsync(async (req, res) => {
-  const sql =
-    'INSERT INTO users(email, password, passwordconfirm, passwordResettoken, passwordResetexpires, role) VALUES ($1, $2, $3, $4, $5, $6)';
-  const password = await bcrypt.hash(req.params.password, 12);
-  const params = [
-    req.params.email,
-    password,
-    password,
-    req.params.passwordResettoken,
-    req.params.passwordResetexpires,
-    req.params.role
-  ];
-  const results = await pool.query(sql, params);
-  res.status(200).json(results.rows);
-});
+exports.createUser = (req, res) => {
+  res.status(500).json({
+    message: 'This route is not defined! Please use /signup instead!'
+  });
+};
 
-exports.updateUserPut = catchAsync(async (req, res) => {
-  const sql =
-    'UPDATE users SET email=$1, password=$2, passwordconfirm=$3, passwordResettoken=$4, passwordResetexpires=$5, role WHERE id=$6';
-  const password = await bcrypt.hash(req.params.password, 12);
-  const params = [
-    req.params.email,
-    password,
-    password,
-    req.params.passwordResettoken,
-    req.params.passwordResetexpires,
-    req.params.role,
-    req.params.userId
-  ];
-  const results = await pool.query(sql, params);
-  res.status(200).json(results.rows);
-});
-exports.updateUserPatch = catchAsync(async (req, res) => {
-  const sql =
-    'UPDATE users SET email=$1, password=$2, passwordconfirm=$3, passwordResettoken=$4, passwordResetexpires=$5, role WHERE id=$6';
-  const password = await bcrypt.hash(req.params.password, 12);
-  const params = [
-    req.params.email,
-    password,
-    password,
-    req.params.passwordResettoken,
-    req.params.passwordResetexpires,
-    req.params.role,
-    req.params.userId
-  ];
-  const results = await pool.query(sql, params);
-  res.status(200).json(results.rows);
+exports.updateUser = catchAsync(async (req, res) => {
+  const id = [req.params.id];
+  const { name, email, role, active } = req.body;
+  const user = await User.update(
+    { name: name, email: email, role: role, active: active },
+    { where: { id } }
+  );
+  res.status(200).json({
+    data: {
+      user
+    }
+  });
 });
 
 exports.deleteUser = catchAsync(async (req, res) => {
-  const sql = 'DELETE FROM users WHERE id=$1';
-  const params = [req.params.userId];
-  const results = await pool.query(sql, params);
-  res.status(200).json(results.rows);
+  const id = [req.params.id];
+  const user = await User.update({ active: false }, { where: { id } });
+  res.status(200).json({
+    data: {
+      user
+    }
+  });
 });
