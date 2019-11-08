@@ -2,7 +2,9 @@ const Task = require('../models/taskModel');
 const catchAsync = require('./../utils/catchAsync');
 
 exports.getAllTasks = catchAsync(async (req, res, next) => {
-  const tasks = await Task.findAll({ where: { active: true } });
+  const offset = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 100;
+  const tasks = await Task.findAll({ limit, offset, where: { active: true } });
   res.status(200).json({
     results: tasks.length,
     data: {
