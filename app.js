@@ -7,16 +7,14 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 
 const AppError = require('./utils/appError');
-const taskRouter = require('./routes/taskRoutes');
+const globalErrorHandler = require('./controllers/errorController');
 const userRouter = require('./routes/userRoutes');
 
+// invoke an instance of express application.
 const app = express();
 
-// 1) GLOBAL MIDDLEWARES
-// Set security HTTP headers
 app.use(helmet());
-
-// Development logging
+// set morgan to log info about our requests for development use.
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
@@ -29,7 +27,7 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-// Body parser, reading data from body into req.body
+// initialize body-parser to parse incoming parameters requests to req.body
 app.use(express.json({ limit: '10kb' }));
 
 // Data sanitization against NoSQL query injection
@@ -41,14 +39,7 @@ app.use(xss());
 // Prevent parameter pollution
 app.use(
   hpp({
-    whitelist: [
-      'duration',
-      'ratingsQuantity',
-      'ratingsAverage',
-      'maxGroupSize',
-      'difficulty',
-      'price'
-    ]
+    whitelist: ['name', 'email']
   })
 );
 
@@ -57,9 +48,10 @@ app.use(express.static(`${__dirname}/public`));
 
 // ROUTES
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/users', taskRouter);
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
+
+app.use(globalErrorHandler);
 
 module.exports = app;
