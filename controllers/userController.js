@@ -2,7 +2,9 @@ const User = require('../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.findAll({ where: { active: true } });
+  const offset = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 100;
+  const users = await User.findAll({ limit, offset, where: { active: true } });
   res.status(200).json({
     results: users.length,
     data: {
