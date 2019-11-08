@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../utils/database');
 
-const task = sequelize.define('task', {
+const Task = sequelize.define('task', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -25,14 +25,4 @@ const task = sequelize.define('task', {
   }
 });
 
-// create all the defined tables in the specified database.
-sequelize
-  .sync()
-  .then(() =>
-    console.log(
-      "tasks table has been successfully created, if one doesn't exist"
-    )
-  )
-  .catch(error => console.log('This error occured', error));
-
-module.exports = task;
+module.exports = Task;

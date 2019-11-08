@@ -16,7 +16,7 @@ const pool = new Pool({
 
 const createTables = () => {
   const users = `CREATE TABLE IF NOT EXISTS
-      users(
+      user(
         id SERIAL PRIMARY KEY,
         email VARCHAR(128) NOT NULL,
         password VARCHAR(128) NOT NULL,
@@ -57,7 +57,7 @@ const importData = catchAsync(async () => {
 
 // DELETE ALL DATA FROM DB
 const deleteData = catchAsync(async () => {
-  const sql = 'DROP TABLE IF EXISTS users';
+  const sql = 'DROP TABLE IF EXISTS user';
   pool.query(sql);
 });
 

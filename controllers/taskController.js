@@ -1,7 +1,7 @@
 const Task = require('../models/taskModel');
 const catchAsync = require('./../utils/catchAsync');
 
-exports.getAlltasks = catchAsync(async (req, res, next) => {
+exports.getAllTasks = catchAsync(async (req, res, next) => {
   const tasks = await Task.findAll({ where: { active: true } });
   res.status(200).json({
     results: tasks.length,
@@ -11,7 +11,7 @@ exports.getAlltasks = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.gettask = catchAsync(async (req, res) => {
+exports.getTask = catchAsync(async (req, res) => {
   const id = [req.params.id];
   const task = await Task.findOne({ where: { id: id, active: true } });
   res.status(200).json({
@@ -21,13 +21,22 @@ exports.gettask = catchAsync(async (req, res) => {
   });
 });
 
-exports.createtask = (req, res) => {
-  res.status(500).json({
-    message: 'This route is not defined! Please use /signup instead!'
+exports.createTask = catchAsync(async (req, res) => {
+  const { name, duration, description } = req.body;
+  const newTask = await Task.create({
+    name: name,
+    duration: duration,
+    description: description,
+    userId: req.user.id
   });
-};
+  res.status(200).json({
+    data: {
+      newTask
+    }
+  });
+});
 
-exports.updatetask = catchAsync(async (req, res) => {
+exports.updateTask = catchAsync(async (req, res) => {
   const id = [req.params.id];
   const { name, duration, description, active } = req.body;
   const task = await Task.update(
@@ -46,7 +55,7 @@ exports.updatetask = catchAsync(async (req, res) => {
   });
 });
 
-exports.deletetask = catchAsync(async (req, res) => {
+exports.deleteTask = catchAsync(async (req, res) => {
   const id = [req.params.id];
   const task = await Task.update({ active: false }, { where: { id } });
   res.status(200).json({

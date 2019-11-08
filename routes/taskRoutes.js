@@ -9,19 +9,15 @@ router.use(authController.protect);
 router
   .route('/')
   .get(taskController.getAllTasks)
-  .post(
-    authController.restrictTo('user'),
-    taskController.setUserIds,
-    taskController.createtask
-  );
+  .post(authController.restrictTo('user'), taskController.createTask);
 
 router
   .route('/:id')
-  .get(taskController.gettask)
-  .patch(authController.restrictTo('user', 'admin'), taskController.updatetask)
+  .get(taskController.getTask)
+  .patch(authController.restrictTo('user', 'admin'), taskController.updateTask)
   .delete(
     authController.restrictTo('user', 'admin'),
-    taskController.deletetask
+    taskController.deleteTask
   );
 
 module.exports = router;
