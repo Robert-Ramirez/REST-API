@@ -2,7 +2,8 @@ const crypto = require('crypto');
 const { promisify } = require('util');
 const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
+
+const models = require('../Database/models');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const sendEmail = require('./../utils/email');
@@ -38,7 +39,7 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   const { name, email, password, role } = req.body;
-  const newUser = await User.create({
+  const newUser = await models.User.create({
     name: name,
     email: email,
     password: password,
@@ -55,7 +56,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Please provide email and password!', 400));
   }
   // 2) Check if user exists && password is correct
-  const user = await User.findOne({ where: { email } });
+  const user = await models.User.findOne({ where: { email } });
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
@@ -84,7 +85,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // 3) Check if user still exists
-  const currentUser = await User.findOne({ where: { id: decoded.id } });
+  const currentUser = await models.User.findOne({ where: { id: decoded.id } });
 
   if (!currentUser) {
     return next(
@@ -121,7 +122,7 @@ exports.restrictTo = (...roles) => {
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on POSTed email
-  const user = await User.findOne({ where: { email: req.body.email } });
+  const user = await models.User.findOne({ where: { email: req.body.email } });
   if (!user) {
     return next(new AppError('There is no user with email address.', 404));
   }
@@ -167,7 +168,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     .update(req.params.token)
     .digest('hex');
 
-  const user = await User.findOne({
+  const user = await models.User.findOne({
     where: {
       passwordResetToken: hashedToken,
       passwordResetExpires: { [Op.gte]: Date.now() }
@@ -190,7 +191,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
-  const user = await User.findOne({ where: { id: req.user.id } });
+  const user = await models.User.findOne({ where: { id: req.user.id } });
 
   // 2) Check if POSTed current password is correct
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {

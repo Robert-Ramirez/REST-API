@@ -1,10 +1,10 @@
-const User = require('../models/userModel');
+const models = require('../Database/models');
 const catchAsync = require('./../utils/catchAsync');
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const offset = req.query.page * 1 || 1;
-  const limit = req.query.limit * 1 || 100;
-  const users = await User.findAll({ limit, offset, where: { active: true } });
+  const users = await models.User.findAll({
+    where: { active: true }
+  });
   res.status(200).json({
     results: users.length,
     data: {
@@ -15,7 +15,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 
 exports.getUser = catchAsync(async (req, res) => {
   const id = [req.params.id];
-  const user = await User.findOne({ where: { id: id, active: true } });
+  const user = await models.User.findOne({ where: { id: id, active: true } });
   res.status(200).json({
     data: {
       user
@@ -32,7 +32,7 @@ exports.createUser = (req, res) => {
 exports.updateUser = catchAsync(async (req, res) => {
   const id = [req.params.id];
   const { name, email, role, active } = req.body;
-  const user = await User.update(
+  const user = await models.User.update(
     { name: name, email: email, role: role, active: active },
     { where: { id } }
   );
@@ -45,7 +45,7 @@ exports.updateUser = catchAsync(async (req, res) => {
 
 exports.deleteUser = catchAsync(async (req, res) => {
   const id = [req.params.id];
-  const user = await User.update({ active: false }, { where: { id } });
+  const user = await models.User.update({ active: false }, { where: { id } });
   res.status(200).json({
     data: {
       user

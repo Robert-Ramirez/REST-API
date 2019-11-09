@@ -10,9 +10,6 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const userRouter = require('./routes/userRoutes');
 const taskRouter = require('./routes/taskRoutes');
-const sequelize = require('./utils/database');
-const Task = require('./models/taskModel');
-const User = require('./models/userModel');
 
 // invoke an instance of express application.
 const app = express();
@@ -58,16 +55,5 @@ app.all('*', (req, res, next) => {
 });
 
 app.use(globalErrorHandler);
-
-Task.belongsTo(User);
-// create all the defined tables in the specified database.
-sequelize
-  .sync()
-  .then(() =>
-    console.log(
-      "tasks table has been successfully created, if one doesn't exist"
-    )
-  )
-  .catch(error => console.log('This error occured', error));
 
 module.exports = app;
