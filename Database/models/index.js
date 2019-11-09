@@ -23,7 +23,6 @@ fs.readdirSync(__dirname)
   })
   .forEach(file => {
     const model = sequelize.import(path.join(__dirname, file));
-    console.log(model.name);
     db[model.name] = model;
   });
 
@@ -33,6 +32,9 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
 sequelize
   .sync()
   .then(() =>
@@ -40,9 +42,7 @@ sequelize
       "tasks table has been successfully created, if one doesn't exist"
     )
   )
-  .catch(error => console.log('This error occured', error));
-
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+  .catch(error => console.log('This error occured', error))
+  .done();
 
 module.exports = db;

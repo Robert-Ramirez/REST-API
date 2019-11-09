@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../server');
+const app = require('../app');
 
 describe('task Endpoints', () => {
   it('should create a new task', async () => {
