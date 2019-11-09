@@ -4,6 +4,7 @@
   "description": "Complete Node.js Guide",
   "main": "app.js",
   "scripts": {
+    "test": "jest --watchAll",
     "migrate:task": "node ./scripts/migrateTask.js --import",
     "migrate:user": "node ./scripts/migrateUser.js --import",
     "delete:task": "node ./scripts/migrateTask.js --delete",
@@ -38,9 +39,18 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
-    "prettier": "^1.18.2"
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "supertest": "^4.0.2"
   },
   "engines": {
     "node": ">=10.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "verbose": true
   }
 }
