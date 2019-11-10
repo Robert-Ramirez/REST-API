@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../../app');
 
-describe('Post Endpoints', () => {
+/*describe('Post Endpoints', () => {
   it('should create a new task', async () => {
     const res = await request(app)
       .post('/api/v1/task/')
@@ -15,3 +15,4 @@ describe('Post Endpoints', () => {
     expect(res.statusCode).toEqual(200);
   });
 });
+*/
