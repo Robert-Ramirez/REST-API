@@ -1,13 +1,18 @@
-const Sequelize = require('sequelize');
+const dotenv = require('dotenv');
 
-const sequelize = new Sequelize(
-  process.env.DATABASE,
-  process.env.DATABASE_USER,
-  process.env.DATABASE_PASSWORD,
-  {
-    dialect: 'postgres',
-    host: 'localhost'
+dotenv.config({ path: `${__dirname}/../../config.env` });
+
+module.exports = {
+  development: {
+    url: process.env.DEV_DATABASE_URL,
+    dialect: 'postgres'
+  },
+  test: {
+    url: process.env.TEST_DATABASE_URL,
+    dialect: 'postgres'
+  },
+  production: {
+    url: process.env.DATABASE_URL,
+    dialect: 'postgres'
   }
-);
-
-module.exports = sequelize;
+};

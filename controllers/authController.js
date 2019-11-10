@@ -3,7 +3,7 @@ const { promisify } = require('util');
 const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
 
-const models = require('../Database/models');
+const models = require('../database/models');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const sendEmail = require('./../utils/email');

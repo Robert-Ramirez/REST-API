@@ -1,19 +1,24 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
+const envConfigs = require('../config/config');
 
 const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = envConfigs[env];
 const db = {};
 
-const sequelize = new Sequelize(
-  process.env.DATABASE,
-  process.env.DATABASE_USER,
-  process.env.DATABASE_PASSWORD,
-  {
-    dialect: 'postgres',
-    host: 'localhost'
-  }
-);
+let sequelize;
+if (config.url) {
+  sequelize = new Sequelize(config.url, config);
+} else {
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config
+  );
+}
 
 fs.readdirSync(__dirname)
   .filter(file => {
@@ -34,15 +39,5 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
-sequelize
-  .sync()
-  .then(() =>
-    console.log(
-      "tasks table has been successfully created, if one doesn't exist"
-    )
-  )
-  .catch(error => console.log('This error occured', error))
-  .done();
 
 module.exports = db;

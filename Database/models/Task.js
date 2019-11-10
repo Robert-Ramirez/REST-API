@@ -1,4 +1,4 @@
-const Model = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   const Task = sequelize.define('Task', {
     id: {
       type: DataTypes.INTEGER,
@@ -22,7 +22,8 @@ const Model = (sequelize, DataTypes) => {
       defaultValue: true
     },
     userId: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   });
 
@@ -34,8 +35,5 @@ const Model = (sequelize, DataTypes) => {
       onDelete: 'CASCADE'
     });
   };
-
   return Task;
 };
-
-module.exports = Model;

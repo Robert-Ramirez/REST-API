@@ -1,4 +1,4 @@
-const models = require('../Database/models');
+const models = require('../database/models');
 const catchAsync = require('./../utils/catchAsync');
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {

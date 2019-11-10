@@ -50,8 +50,8 @@ app.use(
 app.use(express.static(`${__dirname}/public`));
 
 // ROUTES
-app.use('/api/v1/users', userRouter);
-app.use('/api/v1/tasks', taskRouter);
+app.use('/api/v1/user', userRouter);
+app.use('/api/v1/task', taskRouter);
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });

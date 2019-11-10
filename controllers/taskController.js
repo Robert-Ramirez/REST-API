@@ -1,4 +1,4 @@
-const models = require('../Database/models');
+const models = require('../database/models');
 const catchAsync = require('./../utils/catchAsync');
 
 exports.getAllTasks = catchAsync(async (req, res, next) => {
@@ -24,12 +24,12 @@ exports.getTask = catchAsync(async (req, res) => {
 });
 
 exports.createTask = catchAsync(async (req, res) => {
-  const { name, duration, description } = req.body;
+  const { name, duration, description, userId } = req.body;
   const newTask = await models.Task.create({
     name: name,
     duration: duration,
     description: description,
-    userId: req.user.id
+    userId: userId
   });
   res.status(200).json({
     data: {
