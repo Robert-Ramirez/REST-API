@@ -46,7 +46,7 @@ describe('AuthController.signup', () => {
     );
   });
   it('should handle errors', async () => {
-    const errorMessage = { message: 'Done property missing' };
+    const errorMessage = { message: 'property missing' };
     const rejectedPromise = Promise.reject(errorMessage);
     models.User.create.mockReturnValue(rejectedPromise);
     await AuthController.signup(req, res, next);

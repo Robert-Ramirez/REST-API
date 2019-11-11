@@ -1,7 +1,7 @@
 {
   "name": "Jon Doe",
-  "email": "jondoeab134456@example.com",
-  "role": "user",
+  "email": "jondoe@gmail.com",
+  "role": "admin",
   "password":
     "12345678"
 }

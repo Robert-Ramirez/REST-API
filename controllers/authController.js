@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const { promisify } = require('util');
 const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
-
+const catchAsync = require('./../utils/catchAsync');
 const models = require('../database/models');
 const AppError = require('./../utils/appError');
 const sendEmail = require('./../utils/email');
@@ -32,7 +32,13 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.signup = async (req, res, next) => {
   try {
-    const newUser = await models.User.create(req.body);
+    const { name, email, password, role } = req.body;
+    const newUser = await models.User.create({
+      name: name,
+      email: email,
+      password: password,
+      role: role
+    });
     createSendToken(newUser, 200, res);
   } catch (err) {
     next(err);
