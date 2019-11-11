@@ -41,15 +41,13 @@ describe('UserController.deleteUser', () => {
     expect(res.statusCode).toBe(200);
     expect(res._getJSONData()).toStrictEqual(newUser);
   });
-  /*
-    it('should handle errors', async () => {
-      const errorMessage = { message: 'Error' };
-      const rejectedPromise = Promise.reject(errorMessage);
-      models.User.update.mockReturnValue(rejectedPromise);
-      await UserController.deleteUser(req, res, next);
-      expect(next).toHaveBeenCalledWith(errorMessage);
-    });
-    */
+  it('should handle errors', async () => {
+    const errorMessage = { message: 'Error' };
+    const rejectedPromise = Promise.reject(errorMessage);
+    models.User.update.mockReturnValue(rejectedPromise);
+    await UserController.deleteUser(req, res, next);
+    expect(next).toHaveBeenCalledWith(errorMessage);
+  });
 });
 
 describe('UserController.updateUser', () => {
@@ -80,7 +78,7 @@ describe('UserController.updateUser', () => {
     expect(res.statusCode).toBe(200);
     expect(res._getJSONData()).toStrictEqual(newUser);
   });
-  /*
+
   it('should handle errors', async () => {
     const errorMessage = { message: 'Error' };
     const rejectedPromise = Promise.reject(errorMessage);
@@ -88,7 +86,6 @@ describe('UserController.updateUser', () => {
     await UserController.updateUser(req, res, next);
     expect(next).toHaveBeenCalledWith(errorMessage);
   });
-  */
 });
 
 describe('UserController.getUser', () => {
@@ -109,7 +106,7 @@ describe('UserController.getUser', () => {
     expect(res._getJSONData()).toStrictEqual(newUser);
     expect(res._isEndCalled()).toBeTruthy();
   });
-  /*
+
   it('should do error handling', async () => {
     const errorMessage = { message: 'error finding UserModel' };
     const rejectedPromise = Promise.reject(errorMessage);
@@ -117,7 +114,6 @@ describe('UserController.getUser', () => {
     await UserController.getUser(req, res, next);
     expect(next).toHaveBeenCalledWith(errorMessage);
   });
-  */
 });
 
 describe('UserController.getAllUsers', () => {
@@ -137,7 +133,7 @@ describe('UserController.getAllUsers', () => {
     expect(res._isEndCalled()).toBeTruthy();
     expect(res._getJSONData()).toStrictEqual(allUsers);
   });
-  /*
+
   it('should handle errors in getAllUsers', async () => {
     const errorMessage = { message: 'UserModel is not defined' };
     const rejectedPromise = Promise.reject(errorMessage);
@@ -145,7 +141,6 @@ describe('UserController.getAllUsers', () => {
     await UserController.getAllUsers(req, res, next);
     expect(next).toHaveBeenCalledWith(errorMessage);
   });
-  */
 });
 
 describe('UserController.createUser', () => {
@@ -156,14 +151,14 @@ describe('UserController.createUser', () => {
   it('should have a createUser function', () => {
     expect(typeof UserController.createUser).toBe('function');
   });
-  /*
+
   it('should call models.User.create', () => {
     UserController.createUser(req, res, next);
     expect(models.User.create).toBeCalledWith(newUser);
   });
   it('should return 201 response code', async () => {
     await UserController.createUser(req, res, next);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(201);
     expect(res._isEndCalled()).toBeTruthy();
   });
   it('should return json body in response', async () => {
@@ -178,5 +173,4 @@ describe('UserController.createUser', () => {
     await UserController.createUser(req, res, next);
     expect(next).toBeCalledWith(errorMessage);
   });
-  */
 });

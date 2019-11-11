@@ -1,41 +1,59 @@
 const models = require('../database/models');
-const catchAsync = require('./../utils/catchAsync');
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await models.User.findAll({
-    where: { active: true }
-  });
-  res.status(200).json(users);
-});
-
-exports.getUser = catchAsync(async (req, res) => {
-  const user = await models.User.findOne({
-    where: { id: req.params.userId, active: true }
-  });
-  res.status(200).json(user);
-});
-
-exports.createUser = (req, res) => {
-  res.status(500).json({
-    message: 'This route is not defined! Please use /signup instead!'
-  });
+exports.getAllUsers = async (req, res, next) => {
+  try {
+    const users = await models.User.findAll({
+      where: { active: true }
+    });
+    res.status(200).json(users);
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.updateUser = catchAsync(async (req, res) => {
-  const id = [req.params.userId];
-  const { name, email, role, active } = req.body;
-  const user = await models.User.update(
-    { name: name, email: email, role: role, active: active },
-    { where: { id: id } }
-  );
-  res.status(200).json(user);
-});
+exports.getUser = async (req, res, next) => {
+  try {
+    const user = await models.User.findOne({
+      where: { id: req.params.userId, active: true }
+    });
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
+};
 
-exports.deleteUser = catchAsync(async (req, res) => {
-  const id = [req.params.userId];
-  const user = await models.User.update(
-    { active: false },
-    { where: { id: id } }
-  );
-  res.status(200).json(user);
-});
+exports.createUser = async (req, res, next) => {
+  try {
+    const newUser = await models.User.create(req.body);
+    res.status(201).json(newUser);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateUser = async (req, res, next) => {
+  try {
+    const id = [req.params.userId];
+    const { name, email, role, active } = req.body;
+    const user = await models.User.update(
+      { name: name, email: email, role: role, active: active },
+      { where: { id: id } }
+    );
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const id = [req.params.userId];
+    const user = await models.User.update(
+      { active: false },
+      { where: { id: id } }
+    );
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
+};

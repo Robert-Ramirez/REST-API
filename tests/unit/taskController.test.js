@@ -41,7 +41,7 @@ describe('TaskController.deleteTask', () => {
     expect(res.statusCode).toBe(200);
     expect(res._getJSONData()).toStrictEqual(newTask);
   });
-  /*
+
   it('should handle errors', async () => {
     const errorMessage = { message: 'Error' };
     const rejectedPromise = Promise.reject(errorMessage);
@@ -49,7 +49,6 @@ describe('TaskController.deleteTask', () => {
     await TaskController.deleteTask(req, res, next);
     expect(next).toHaveBeenCalledWith(errorMessage);
   });
-  */
 });
 
 describe('TaskController.updateTask', () => {
@@ -71,6 +70,7 @@ describe('TaskController.updateTask', () => {
       { where: { id: [req.params.taskId] } }
     );
   });
+
   it('should return a response with json data and http code 200', async () => {
     req.params.taskId = TaskId;
     req.body = newTask;
@@ -80,7 +80,7 @@ describe('TaskController.updateTask', () => {
     expect(res.statusCode).toBe(200);
     expect(res._getJSONData()).toStrictEqual(newTask);
   });
-  /*
+
   it('should handle errors', async () => {
     const errorMessage = { message: 'Error' };
     const rejectedPromise = Promise.reject(errorMessage);
@@ -88,13 +88,13 @@ describe('TaskController.updateTask', () => {
     await TaskController.updateTask(req, res, next);
     expect(next).toHaveBeenCalledWith(errorMessage);
   });
-  */
 });
 
 describe('TaskController.getTask', () => {
   it('should have a getTask', () => {
     expect(typeof TaskController.getTask).toBe('function');
   });
+
   it('should call models.Task.findOne with route parameters', async () => {
     req.params.taskId = '5d5ecb5a6e598605f06cb945';
     await TaskController.getTask(req, res, next);
@@ -102,6 +102,7 @@ describe('TaskController.getTask', () => {
       where: { id: req.params.taskId, active: true }
     });
   });
+
   it('should return json body and response code 200', async () => {
     models.Task.findOne.mockReturnValue(newTask);
     await TaskController.getTask(req, res, next);
@@ -109,7 +110,7 @@ describe('TaskController.getTask', () => {
     expect(res._getJSONData()).toStrictEqual(newTask);
     expect(res._isEndCalled()).toBeTruthy();
   });
-  /*
+
   it('should do error handling', async () => {
     const errorMessage = { message: 'error finding TaskModel' };
     const rejectedPromise = Promise.reject(errorMessage);
@@ -117,19 +118,20 @@ describe('TaskController.getTask', () => {
     await TaskController.getTask(req, res, next);
     expect(next).toHaveBeenCalledWith(errorMessage);
   });
-  */
 });
 
 describe('TaskController.getAllTasks', () => {
   it('should have a getAllTasks function', () => {
     expect(typeof TaskController.getAllTasks).toBe('function');
   });
+
   it('should call models.Task.findAll({})', async () => {
     await TaskController.getAllTasks(req, res, next);
     expect(models.Task.findAll).toHaveBeenCalledWith({
       where: { active: true }
     });
   });
+
   it('should return response with status 200 and all Tasks', async () => {
     models.Task.findAll.mockReturnValue(allTasks);
     await TaskController.getAllTasks(req, res, next);
@@ -137,7 +139,7 @@ describe('TaskController.getAllTasks', () => {
     expect(res._isEndCalled()).toBeTruthy();
     expect(res._getJSONData()).toStrictEqual(allTasks);
   });
-  /*
+
   it('should handle errors in getAllTasks', async () => {
     const errorMessage = { message: 'TaskModel is not defined' };
     const rejectedPromise = Promise.reject(errorMessage);
@@ -145,7 +147,6 @@ describe('TaskController.getAllTasks', () => {
     await TaskController.getAllTasks(req, res, next);
     expect(next).toHaveBeenCalledWith(errorMessage);
   });
-  */
 });
 
 describe('TaskController.createTask', () => {
@@ -162,7 +163,7 @@ describe('TaskController.createTask', () => {
   });
   it('should return 201 response code', async () => {
     await TaskController.createTask(req, res, next);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(201);
     expect(res._isEndCalled()).toBeTruthy();
   });
   it('should return json body in response', async () => {
@@ -170,7 +171,6 @@ describe('TaskController.createTask', () => {
     await TaskController.createTask(req, res, next);
     expect(res._getJSONData()).toStrictEqual(newTask);
   });
-  /*
   it('should handle errors', async () => {
     const errorMessage = { message: 'Done property missing' };
     const rejectedPromise = Promise.reject(errorMessage);
@@ -178,5 +178,4 @@ describe('TaskController.createTask', () => {
     await TaskController.createTask(req, res, next);
     expect(next).toBeCalledWith(errorMessage);
   });
-  */
 });
