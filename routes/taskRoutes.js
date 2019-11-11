@@ -12,7 +12,7 @@ router
   .post(authController.restrictTo('user'), taskController.createTask);
 
 router
-  .route('/:id')
+  .route('/:taskId')
   .get(taskController.getTask)
   .patch(authController.restrictTo('user', 'admin'), taskController.updateTask)
   .delete(

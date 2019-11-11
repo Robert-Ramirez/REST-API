@@ -1,0 +1,8 @@
+{
+  "name": "Jon Doe",
+  "email": "jondoe@example.com",
+  "role": "user",
+  "password":
+    "$2a$12$u.3/qLxhPxSCwh4sAGNABOPMeFFQob7ZGOvsw7u5Sv7MKyGZCox/e",
+  "active": true
+}

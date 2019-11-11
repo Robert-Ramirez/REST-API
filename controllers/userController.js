@@ -5,22 +5,14 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await models.User.findAll({
     where: { active: true }
   });
-  res.status(200).json({
-    results: users.length,
-    data: {
-      users
-    }
-  });
+  res.status(200).json(users);
 });
 
 exports.getUser = catchAsync(async (req, res) => {
-  const id = [req.params.id];
-  const user = await models.User.findOne({ where: { id: id, active: true } });
-  res.status(200).json({
-    data: {
-      user
-    }
+  const user = await models.User.findOne({
+    where: { id: req.params.userId, active: true }
   });
+  res.status(200).json(user);
 });
 
 exports.createUser = (req, res) => {
@@ -30,25 +22,20 @@ exports.createUser = (req, res) => {
 };
 
 exports.updateUser = catchAsync(async (req, res) => {
-  const id = [req.params.id];
+  const id = [req.params.userId];
   const { name, email, role, active } = req.body;
   const user = await models.User.update(
     { name: name, email: email, role: role, active: active },
-    { where: { id } }
+    { where: { id: id } }
   );
-  res.status(200).json({
-    data: {
-      user
-    }
-  });
+  res.status(200).json(user);
 });
 
 exports.deleteUser = catchAsync(async (req, res) => {
-  const id = [req.params.id];
-  const user = await models.User.update({ active: false }, { where: { id } });
-  res.status(200).json({
-    data: {
-      user
-    }
-  });
+  const id = [req.params.userId];
+  const user = await models.User.update(
+    { active: false },
+    { where: { id: id } }
+  );
+  res.status(200).json(user);
 });

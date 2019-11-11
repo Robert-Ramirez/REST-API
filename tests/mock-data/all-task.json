@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Study",
+    "duration": 4,
+    "description": "Testing.",
+    "active": true,
+    "userId": 1
+  }
+]
