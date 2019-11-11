@@ -63,8 +63,7 @@ describe('UserController.updateUser', () => {
       {
         name: newUser.name,
         email: newUser.email,
-        role: newUser.role,
-        active: newUser.active
+        role: newUser.role
       },
       { where: { id: [req.params.userId] } }
     );
