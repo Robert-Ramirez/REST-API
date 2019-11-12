@@ -5,7 +5,7 @@ const taskRouter = require('./../routes/taskRoutes');
 
 const router = express.Router();
 
-router.use('/:userId/tasks', taskRouter);
+router.use('/:userId/task', taskRouter);
 
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);

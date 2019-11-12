@@ -9,7 +9,7 @@ router.use(authController.protect);
 router
   .route('/')
   .get(taskController.getAllTasks)
-  .post(authController.restrictTo('user'), taskController.createTask);
+  .post(authController.restrictTo('user', 'admin'), taskController.createTask);
 
 router
   .route('/:taskId')

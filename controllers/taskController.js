@@ -25,7 +25,7 @@ exports.getTask = async (req, res, next) => {
 exports.createTask = async (req, res, next) => {
   try {
     const newTask = await models.Task.create(req.body);
-    res.status(201).json(newTask);
+    res.status(200).json(newTask);
   } catch (err) {
     next(err);
   }

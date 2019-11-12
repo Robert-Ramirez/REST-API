@@ -161,9 +161,9 @@ describe('TaskController.createTask', () => {
     TaskController.createTask(req, res, next);
     expect(models.Task.create).toBeCalledWith(newTask);
   });
-  it('should return 201 response code', async () => {
+  it('should return 200 response code', async () => {
     await TaskController.createTask(req, res, next);
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(res._isEndCalled()).toBeTruthy();
   });
   it('should return json body in response', async () => {
