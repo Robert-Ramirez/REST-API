@@ -25,7 +25,7 @@ exports.getUser = async (req, res, next) => {
 exports.createUser = async (req, res, next) => {
   try {
     const newUser = await models.User.create(req.body);
-    res.status(201).json(newUser);
+    res.status(200).json(newUser);
   } catch (err) {
     next(err);
   }

@@ -157,7 +157,7 @@ describe('UserController.createUser', () => {
   });
   it('should return 201 response code', async () => {
     await UserController.createUser(req, res, next);
-    expect(res.statusCode).toBe(201);
+    expect(res.statusCode).toBe(200);
     expect(res._isEndCalled()).toBeTruthy();
   });
   it('should return json body in response', async () => {
