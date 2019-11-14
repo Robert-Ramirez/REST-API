@@ -1,3 +1,4 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -6,13 +7,11 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 
+dotenv.config({ path: './config.env' });
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const userRouter = require('./routes/userRoutes');
 const taskRouter = require('./routes/taskRoutes');
-const sequelize = require('./utils/database');
-const Task = require('./models/taskModel');
-const User = require('./models/userModel');
 
 // invoke an instance of express application.
 const app = express();
@@ -51,23 +50,15 @@ app.use(
 app.use(express.static(`${__dirname}/public`));
 
 // ROUTES
-app.use('/api/v1/users', userRouter);
-app.use('/api/v1/tasks', taskRouter);
+app.use('/api/v1/user', userRouter);
+app.use('/api/v1/task', taskRouter);
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
+app.use((error, req, res, next) => {
+  res.status(500).json({ message: error.message });
+});
+
 app.use(globalErrorHandler);
-
-Task.belongsTo(User);
-// create all the defined tables in the specified database.
-sequelize
-  .sync()
-  .then(() =>
-    console.log(
-      "tasks table has been successfully created, if one doesn't exist"
-    )
-  )
-  .catch(error => console.log('This error occured', error));
-
 module.exports = app;

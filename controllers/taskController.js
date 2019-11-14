@@ -1,68 +1,64 @@
-const Task = require('../models/taskModel');
-const catchAsync = require('./../utils/catchAsync');
+const models = require('../database/models');
 
-exports.getAllTasks = catchAsync(async (req, res, next) => {
-  const offset = req.query.page * 1 || 1;
-  const limit = req.query.limit * 1 || 100;
-  const tasks = await Task.findAll({ limit, offset, where: { active: true } });
-  res.status(200).json({
-    results: tasks.length,
-    data: {
-      tasks
-    }
-  });
-});
+exports.getAllTasks = async (req, res, next) => {
+  try {
+    const tasks = await models.Task.findAll({
+      where: { active: true }
+    });
+    res.status(200).json(tasks);
+  } catch (err) {
+    next(err);
+  }
+};
 
-exports.getTask = catchAsync(async (req, res) => {
-  const id = [req.params.id];
-  const task = await Task.findOne({ where: { id: id, active: true } });
-  res.status(200).json({
-    data: {
-      task
-    }
-  });
-});
+exports.getTask = async (req, res, next) => {
+  try {
+    const task = await models.Task.findOne({
+      where: { id: req.params.taskId, active: true }
+    });
+    res.status(200).json(task);
+  } catch (err) {
+    next(err);
+  }
+};
 
-exports.createTask = catchAsync(async (req, res) => {
-  const { name, duration, description } = req.body;
-  const newTask = await Task.create({
-    name: name,
-    duration: duration,
-    description: description,
-    userId: req.user.id
-  });
-  res.status(200).json({
-    data: {
-      newTask
-    }
-  });
-});
+exports.createTask = async (req, res, next) => {
+  try {
+    const newTask = await models.Task.create(req.body);
+    res.status(200).json(newTask);
+  } catch (err) {
+    next(err);
+  }
+};
 
-exports.updateTask = catchAsync(async (req, res) => {
-  const id = [req.params.id];
-  const { name, duration, description, active } = req.body;
-  const task = await Task.update(
-    {
-      name: name,
-      duration: duration,
-      description: description,
-      active: active
-    },
-    { where: { id } }
-  );
-  res.status(200).json({
-    data: {
-      task
-    }
-  });
-});
+exports.updateTask = async (req, res, next) => {
+  try {
+    const id = [req.params.taskId];
+    const { name, duration, description, active } = req.body;
+    const task = await models.Task.update(
+      {
+        name: name,
+        duration: duration,
+        description: description,
+        active: active
+      },
+      { where: { id: id } }
+    );
+    res.status(200).json(task);
+  } catch (err) {
+    next(err);
+  }
+};
 
-exports.deleteTask = catchAsync(async (req, res) => {
-  const id = [req.params.id];
-  const task = await Task.update({ active: false }, { where: { id } });
-  res.status(200).json({
-    data: {
-      task
-    }
-  });
-});
+exports.deleteTask = async (req, res, next) => {
+  try {
+    const id = [req.params.taskId];
+    const task = await models.Task.update(
+      { active: false },
+      { where: { id: id } }
+    );
+    res.status(200).json(task);
+  } catch (err) {
+    next(err);
+  }
+};
